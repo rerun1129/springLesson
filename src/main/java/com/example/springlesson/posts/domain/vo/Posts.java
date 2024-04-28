@@ -1,6 +1,5 @@
-package com.example.springlesson.users.domain.vo;
+package com.example.springlesson.posts.domain.vo;
 
-import com.example.springlesson.users.domain.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,10 +7,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Users {
+public class Posts {
     private Long id;
-    private String loginId;
-    private String password;
-    private String email;
-    private UserRole role;
+    private String title;
+    private String contents;
+    private String author;
 }

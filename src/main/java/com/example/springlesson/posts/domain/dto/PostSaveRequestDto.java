@@ -1,5 +1,15 @@
 package com.example.springlesson.posts.domain.dto;
 
-public class PostRequestDto {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class PostSaveRequestDto {
+    private Long id;
+    private String title;
+    private String contents;
+    private String author;
 }
