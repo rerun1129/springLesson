@@ -5,6 +5,8 @@ server:
       force-response: true
 #spring
 spring:
+  profiles:
+    include: oauth
   application:
   name : "springLesson"
   datasource:

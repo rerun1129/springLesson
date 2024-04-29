@@ -9,6 +9,7 @@
         from posts
         where id = #{id}
     </select>
+
     <select id="findAll" resultType="com.example.springlesson.posts.domain.dto.PostResponseDto">
         select
             id, IFNULL(title, '') AS title, IFNULL(contents, '') AS contents, author, modifiedDate
