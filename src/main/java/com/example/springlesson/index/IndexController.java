@@ -1,5 +1,6 @@
 package com.example.springlesson.index;
 
+import com.example.springlesson.config.auth.LoginUser;
 import com.example.springlesson.config.auth.dto.SessionUser;
 import com.example.springlesson.posts.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +15,12 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class IndexController {
     private final PostService postService;
-    private final HttpSession httpSession;
     @GetMapping("/")
-    public String index( Model model ) {
+    public String index( Model model, @LoginUser SessionUser user ) {
         model.addAttribute ( "posts", postService.findAll () );
-        SessionUser user = ( SessionUser ) httpSession.getAttribute ( "user" );
-        if(user != null) model.addAttribute ( "userName", user.getName () );
+        if(user != null) {
+            model.addAttribute ( "userName", user.getName ( ) );
+        }
         return "index";
     }
 

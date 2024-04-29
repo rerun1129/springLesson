@@ -14,6 +14,7 @@ public class Users {
     private String name;
     private String email;
     private String picture;
+    private String password;
     private Role role;
 
     public Users (String name, String email, String picture, Role role) {

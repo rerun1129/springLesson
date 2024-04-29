@@ -12,7 +12,7 @@
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
         insert into users
-        values (#{id}, #{name}, #{email}, #{picture}, #{role})
+        values (#{id}, #{name}, #{email}, #{picture}, #{role}, #{password})
     </insert>
 
     <update id="update">
