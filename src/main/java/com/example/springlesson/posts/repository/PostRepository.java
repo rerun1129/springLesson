@@ -5,12 +5,18 @@ import com.example.springlesson.posts.domain.dto.PostSaveRequestDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 @Mapper
 public interface PostRepository {
-    void save ( PostSaveRequestDto dto );
     Optional<PostResponseDto> findById ( Long id );
 
+    List <PostResponseDto> findAll ( );
+
+    void save ( PostSaveRequestDto dto );
+
     void update ( @Param("title") String title, @Param("contents") String contents, @Param("id")Long id );
+
+    void delete ( Long id );
 }

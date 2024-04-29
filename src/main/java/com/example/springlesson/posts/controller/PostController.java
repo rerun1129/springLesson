@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -19,6 +21,11 @@ public class PostController {
         return postService.findById ( id );
     }
 
+    @GetMapping("/posts")
+    public List <PostResponseDto> findAll ( ){
+        return postService.findAll ( );
+    }
+
     @PostMapping("/posts")
     public void save( @RequestBody PostSaveRequestDto dto){
         postService.save ( dto );
@@ -27,5 +34,10 @@ public class PostController {
     @PutMapping("/posts/{id}")
     public void update (@PathVariable Long id, @RequestBody PostUpdateRequestDto dto ){
         postService.update (id, dto);
+    }
+
+    @DeleteMapping("/posts/{id}")
+    public void delete ( @PathVariable Long id ){
+        postService.delete (id);
     }
 }

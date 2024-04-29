@@ -3,22 +3,34 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springlesson.posts.repository.PostRepository">
 
+    <select id="findById" resultType="com.example.springlesson.posts.domain.dto.PostResponseDto">
+        select
+            id, IFNULL(title, '') AS title, IFNULL(contents, '') AS contents, author, modifiedDate
+        from posts
+        where id = #{id}
+    </select>
+    <select id="findAll" resultType="com.example.springlesson.posts.domain.dto.PostResponseDto">
+        select
+            id, IFNULL(title, '') AS title, IFNULL(contents, '') AS contents, author, modifiedDate
+        from posts
+    </select>
+
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
-        insert into posts values (#{id}, #{title}, #{contents}, #{author})
+        insert into posts
+        values (#{id}, #{title}, #{contents}, #{author}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
     </insert>
 
     <update id="update">
         update posts
         set title = #{title},
-            contents = #{contents}
+            contents = #{contents},
+            modifiedDate = CURRENT_TIMESTAMP
         where id = #{id}
     </update>
 
-    <select id="findById" resultType="com.example.springlesson.posts.domain.dto.PostResponseDto">
-        select
-            id, title, contents, author
-        from posts
+    <delete id="delete">
+        delete from posts
         where id = #{id}
-    </select>
+    </delete>
 
 </mapper>

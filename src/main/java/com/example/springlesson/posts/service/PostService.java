@@ -8,18 +8,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
 
+    public PostResponseDto findById ( Long id ) {
+        return postRepository.findById(id).orElseThrow ( () -> new IllegalArgumentException ("해당 게시글이 없습니다.") );
+    }
+
+    public List <PostResponseDto> findAll ( ) {
+        return postRepository.findAll( );
+    }
+
     @Transactional
     public void save ( PostSaveRequestDto dto ) {
         postRepository.save(dto);
-    }
-
-    public PostResponseDto findById ( Long id ) {
-        return postRepository.findById(id).orElseThrow ( () -> new IllegalArgumentException ("해당 게시글이 없습니다.") );
     }
 
     @Transactional
@@ -27,4 +33,10 @@ public class PostService {
         postRepository.findById ( id ).orElseThrow ( () -> new IllegalArgumentException ("해당 게시글이 없습니다.") );
         postRepository.update(dto.getTitle (), dto.getContents (), id);
     }
+
+    @Transactional
+    public void delete ( Long id ) {
+        postRepository.delete(id);
+    }
+
 }
