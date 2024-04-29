@@ -11,7 +11,7 @@
     </select>
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
-        insert into users
+        insert into users (id, name, email, picture, role, password)
         values (#{id}, #{name}, #{email}, #{picture}, #{role}, #{password})
     </insert>
 
