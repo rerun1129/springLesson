@@ -58,4 +58,9 @@ public class viewController {
     public String joinForm(){
         return "joinForm";
     }
+
+    @GetMapping("/admin")
+    public String admin(){
+        return "admin";
+    }
 }
