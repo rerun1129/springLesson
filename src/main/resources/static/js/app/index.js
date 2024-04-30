@@ -29,7 +29,7 @@ const main = {
 
         } ).done( function () {
             alert( '글이 등록되었습니다.' )
-            window.location.href = '/'; //요청과 응답이 성공했을 경우
+            window.location.href = '/posts'; //요청과 응답이 성공했을 경우
         } ).fail( function ( error ) {
             alert( JSON.stringify( error ) ); //실패하면 에러 메세지
         } )
@@ -49,7 +49,7 @@ const main = {
             data        : JSON.stringify( data )
         } ).done( function () {
             alert( '글이 수정되었습니다.' )
-            window.location.href = '/';
+            window.location.href = '/posts';
         } ).fail( function ( error ) {
             alert( JSON.stringify( error ) )
         } )
@@ -65,7 +65,7 @@ const main = {
             contentType : 'application/json; charset=utf-8'
         } ).done( function () {
             alert( '글이 삭제되었습니다.' )
-            window.location.href = '/'
+            window.location.href = '/posts'
         } ).fail( function ( error ) {
             alert( JSON.stringify( error ) )
         } )

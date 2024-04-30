@@ -1,15 +1,12 @@
 package com.example.springlesson.users.domain.vo;
 
 import com.example.springlesson.users.domain.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class Users {
     private Long id;
     private String username;

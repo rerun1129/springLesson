@@ -11,7 +11,7 @@
     </select>
     <select id="findByUsername" resultType="com.example.springlesson.users.domain.vo.Users">
         select
-            id, username, email, picture, role
+            id, username, password, email, picture, role
         from users
         where username = #{username}
     </select>
