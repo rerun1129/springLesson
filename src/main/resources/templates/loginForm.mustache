@@ -1,0 +1,11 @@
+{{>layout/header}}
+<h1>로그인 페이지</h1>
+<form action="/loginProc">
+	<label for="username">아이디</label>
+	<input type="text" name="username" id="username" placeholder="아이디">
+	<label for="password">비밀번호</label>
+	<input type="password" name="password" id="password" placeholder="비밀번호">
+	<button>로그인</button>
+</form>
+<a href="/joinForm">회원가입</a>
+{{>layout/footer}}

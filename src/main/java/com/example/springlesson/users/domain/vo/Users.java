@@ -9,22 +9,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Users {
     private Long id;
-    private String name;
+    private String username;
     private String email;
     private String picture;
     private String password;
     private Role role;
-
-    public Users (String name, String email, String picture, Role role) {
-        this.name = name;
-        this.email = email;
-        this.picture = picture;
-        this.role = role;
-    }
-
-    public String getRoleKey(){
-        return this.role.getKey();
-    }
 }

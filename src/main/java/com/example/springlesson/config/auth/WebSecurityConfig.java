@@ -1,38 +1,31 @@
 package com.example.springlesson.config.auth;
 
-import com.example.springlesson.config.auth.dto.SessionUser;
-import com.example.springlesson.users.domain.Role;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final HttpSession httpSession;
+
+    @Bean
+    public BCryptPasswordEncoder encoder(){
+        return new BCryptPasswordEncoder ();
+    }
+
     @Override
     protected void configure ( HttpSecurity http ) throws Exception {
-        http.csrf().disable()
-            .authorizeRequests ()
-            .antMatchers ( "/", "/css/**", "/images/**", "/js/**" ).permitAll ()
-            .antMatchers ( "/api/**" ).hasRole ( Role.USER.name ( ) )
-            .anyRequest ().authenticated ()
-            .and ()
-            .logout ()
-            .logoutSuccessUrl ( "/" )
-            .invalidateHttpSession ( true )
-            .and().oauth2Login ().defaultSuccessUrl ( "/" ).userInfoEndpoint ().userService ( customOAuth2UserService );
+        http.csrf().disable();
+        http.authorizeRequests()
+            .antMatchers("/posts/**").authenticated() //인증(로그인)만 하면 접근 가능
+            .antMatchers("/admin/**")//인증 + 역할
+            .access("hasRole('ADMIN')")
+            .anyRequest().permitAll()//기타 URL은 전부 허용(로그인 안해도 접근 가능)
+            .and().formLogin().loginPage("/loginForm")
+            .loginProcessingUrl("/loginProc")
+            .defaultSuccessUrl("/");
     }
 }
