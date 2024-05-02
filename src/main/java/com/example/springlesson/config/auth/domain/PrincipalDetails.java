@@ -3,14 +3,18 @@ package com.example.springlesson.config.auth.domain;
 import com.example.springlesson.users.domain.vo.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 //@RequiredArgsConstructor
-public class PrincipalDetails implements UserDetails {
+public class PrincipalDetails implements UserDetails, OAuth2User {
     private final Users user;
+    private Map<String, Object> attributes;
 
+    //일반 로그인
     public PrincipalDetails ( Users user ) {
         if(user.getProvider () == null){
             this.user = Users.builder ( )
@@ -23,6 +27,12 @@ public class PrincipalDetails implements UserDetails {
         }else {
             this.user = user;
         }
+    }
+
+    //OAuth2 로그인 시 사용
+    public PrincipalDetails(Users user, Map<String, Object> attributes){
+        this.user = user;
+        this.attributes = attributes;
     }
 
     public Users getUser ( ) {
@@ -65,5 +75,16 @@ public class PrincipalDetails implements UserDetails {
         Collection <GrantedAuthority> collect = new ArrayList <> ( );
         collect.add (()-> user.getRole ( ).name ());
         return collect;
+    }
+
+    //OAuth2User 의 오버라이드
+    @Override
+    public String getName ( ) {
+        return null;
+    }
+
+    @Override
+    public Map <String, Object> getAttributes ( ) {
+        return attributes;
     }
 }

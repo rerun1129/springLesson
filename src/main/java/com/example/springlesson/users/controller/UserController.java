@@ -15,17 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @GetMapping("/users/test")
-    public String testLogin ( Authentication authentication, @AuthenticationPrincipal PrincipalDetails userDetails ){
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        System.out.println(principalDetails.getUser());
+    public String testLogin ( @AuthenticationPrincipal PrincipalDetails userDetails ){
         System.out.println(userDetails.getUser());
         return "일반 로그인 정보 확인";
     }
 
     @GetMapping("/users/oauth/test")
-    public String testOAuthLogin ( Authentication authentication, @AuthenticationPrincipal OAuth2User userDetails ){
-        OAuth2User oAuth2User = ( OAuth2User ) authentication.getPrincipal ( );
-        System.out.println(oAuth2User.getAttributes ());
+    public String testOAuthLogin ( @AuthenticationPrincipal OAuth2User userDetails ){
         System.out.println(userDetails.getAttributes ());
         return "SNS 로그인 정보 확인";
     }
