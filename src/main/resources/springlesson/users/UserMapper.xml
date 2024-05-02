@@ -5,20 +5,20 @@
 
     <select id="findByEmail" resultType="com.example.springlesson.users.domain.vo.Users">
         select
-            id, username, email, picture, role
+            id, username, email, picture, role, provider, providerId
         from users
         where email = #{email}
     </select>
     <select id="findByUsername" resultType="com.example.springlesson.users.domain.vo.Users">
         select
-            id, username, password, email, picture, role
+            id, username, password, email, picture, role, provider, providerId
         from users
         where username = #{username}
     </select>
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
-        insert into users (id, username, email, picture, role, password, createDate)
-        values (#{id}, #{username}, #{email}, #{picture}, 'USER', #{password}, current_timestamp)
+        insert into users (id, username, email, picture, role, password, createDate, provider, providerId)
+        values (#{id}, #{username}, #{email}, #{picture}, 'USER', #{password}, current_timestamp, #{provider}, #{providerId})
     </insert>
 
     <update id="update">

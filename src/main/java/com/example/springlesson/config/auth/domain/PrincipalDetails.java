@@ -1,16 +1,33 @@
 package com.example.springlesson.config.auth.domain;
 
 import com.example.springlesson.users.domain.vo.Users;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class PrincipalDetails implements UserDetails {
     private final Users user;
+
+    public PrincipalDetails ( Users user ) {
+        if(user.getProvider () == null){
+            this.user = Users.builder ( )
+                            .id ( user.getId () )
+                            .username ( user.getUsername () )
+                            .email ( user.getEmail () )
+                            .password ( user.getPassword () )
+                            .role ( user.getRole () )
+                            .build ( );
+        }else {
+            this.user = user;
+        }
+    }
+
+    public Users getUser ( ) {
+        return this.user;
+    }
 
     @Override
     public String getPassword() {

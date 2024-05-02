@@ -14,4 +14,7 @@ public class Users {
     private String picture;
     private String password;
     private Role role;
+
+    private String provider;
+    private String providerId;
 }

@@ -1,5 +1,7 @@
 package com.example.springlesson.config.auth;
 
+import com.example.springlesson.config.oauth.PrincipalOauth2UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,8 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
+    private final PrincipalOauth2UserService principalOauth2UserService;
     @Bean
     public BCryptPasswordEncoder encoder(){
         return new BCryptPasswordEncoder ();
@@ -27,6 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().permitAll()//기타 URL은 전부 허용(로그인 안해도 접근 가능)
             .and().formLogin().loginPage("/loginForm")
             .loginProcessingUrl("/loginProc")
-            .defaultSuccessUrl("/");
+            .defaultSuccessUrl("/")
+            .and().oauth2Login ().loginPage ( "/loginForm" )
+            .userInfoEndpoint ().userService ( principalOauth2UserService );
     }
 }
