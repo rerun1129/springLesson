@@ -17,12 +17,6 @@ public class UserController {
     @GetMapping("/users/test")
     public String testLogin ( @AuthenticationPrincipal PrincipalDetails userDetails ){
         System.out.println(userDetails.getUser());
-        return "일반 로그인 정보 확인";
-    }
-
-    @GetMapping("/users/oauth/test")
-    public String testOAuthLogin ( @AuthenticationPrincipal OAuth2User userDetails ){
-        System.out.println(userDetails.getAttributes ());
-        return "SNS 로그인 정보 확인";
+        return "일반 로그인 및 SNS 로그인 정보 확인";
     }
 }
