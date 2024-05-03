@@ -1,6 +1,7 @@
 package com.example.springlesson.config.oauth;
 
 import com.example.springlesson.config.auth.domain.PrincipalDetails;
+import com.example.springlesson.users.domain.Role;
 import com.example.springlesson.users.domain.vo.Users;
 import com.example.springlesson.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                                 .password ( password )
                                 .picture ( picture )
                                 .provider ( provider )
+                                .role ( optionalUsers.isPresent () ? optionalUsers.get ( ).getRole ( ) : Role.USER )
                                 .providerId ( providerId )
                                 .build ( );
         if(optionalUsers.isEmpty ()) userRepository.save ( buildUser );
