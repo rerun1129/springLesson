@@ -2,6 +2,7 @@ package com.example.springlesson.config.oauth;
 
 import com.example.springlesson.config.auth.domain.PrincipalDetails;
 import com.example.springlesson.config.oauth.provider.GoogleUserInfo;
+import com.example.springlesson.config.oauth.provider.KakaoUserInfo;
 import com.example.springlesson.config.oauth.provider.NaverUserInfo;
 import com.example.springlesson.config.oauth.provider.OAuth2UserInfo;
 import com.example.springlesson.users.domain.Role;
@@ -32,7 +33,10 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             oAuth2UserInfo = new GoogleUserInfo ( oAuth2User.getAttributes () );
         }else if( "naver".equals ( provider )){
             oAuth2UserInfo = new NaverUserInfo ( ( Map <String, Object> ) oAuth2User.getAttributes ( ).get ( "response" ) );
+        }else if( "kakao".equals ( provider )){
+            oAuth2UserInfo = new KakaoUserInfo ( oAuth2User.getAttributes ( ) );
         }
+
         String providerId = oAuth2UserInfo.getProviderId();
         String email = oAuth2UserInfo.getEmail ();
         String picture = oAuth2UserInfo.getPicture ( );
