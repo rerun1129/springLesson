@@ -26,6 +26,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1")
     implementation("org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16")
+    implementation("org.springframework.data:spring-data-commons:3.2.5")
     compileOnly("org.projectlombok:lombok")
     compileOnly("org.springframework.boot:spring-boot-starter-mustache")
     compileOnly("org.springframework.boot:spring-boot-starter-oauth2-client")

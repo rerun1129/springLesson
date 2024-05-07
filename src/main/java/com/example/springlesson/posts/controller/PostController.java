@@ -21,10 +21,6 @@ public class PostController {
         return postService.findById ( id );
     }
 
-    @GetMapping("/posts")
-    public List <PostResponseDto> findAll ( ){
-        return postService.findAll ( );
-    }
 
     @PostMapping("/posts")
     public void save( @RequestBody PostSaveRequestDto dto){

@@ -13,6 +13,8 @@ public interface PostRepository {
     Optional<PostResponseDto> findById ( Long id );
 
     List <PostResponseDto> findAll ( );
+    List <PostResponseDto> findPostByPageNum ( @Param ( "offset" ) long offset, @Param ( "pageSize" ) int pageSize );
+    int countPost ( );
 
     void save ( PostSaveRequestDto dto );
 

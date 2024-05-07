@@ -16,6 +16,20 @@
         from posts
     </select>
 
+    <select id="findPostByPageNum" resultType="com.example.springlesson.posts.domain.dto.PostResponseDto">
+        select
+            id, IFNULL(title, '') AS title, IFNULL(contents, '') AS contents, author, modifiedDate
+        from posts
+        order by id
+        limit #{pageSize} offset #{offset}
+    </select>
+
+    <select id="countPost" resultType="int">
+        select
+            COUNT(id)
+        from posts
+    </select>
+
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
         insert into posts
         values (#{id}, #{title}, #{contents}, #{author}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)

@@ -30,4 +30,22 @@
 	{{/posts}}
 	</tbody>
 </table>
+<div class="pagination justify-content-center">
+	{{#hasPrev}}
+		<a href="?page={{prev}}" role="button" class="btn btn-lg bi bi-caret-left-square-fill"> prev
+	{{/hasPrev}}
+	{{^hasPrev}}
+		<a href="?page={{prev}}" role="button" class="btn btn-lg bi bi-caret-left-square-fill disabled"> prev
+	{{/hasPrev}}
+	{{#totalPageCount}}
+		<a href="?page={{.}}" role="button" class="btn btn-lg bi bi-caret-left-square-fill"> {{.}}
+	{{/totalPageCount}}
+	{{#hasNext}}
+		<a href="?page={{next}}" role="button" class="btn btn-lg bi bi-caret-right-square-fill"> next
+	{{/hasNext}}
+	{{^hasNext}}
+		<a href="?page={{next}}" role="button" class="btn btn-lg bi bi-caret-right-square-fill disabled"> next
+	{{/hasNext}}
+</div>
+
 {{>layout/footer}}

@@ -5,6 +5,9 @@ import com.example.springlesson.posts.domain.dto.PostSaveRequestDto;
 import com.example.springlesson.posts.domain.dto.PostUpdateRequestDto;
 import com.example.springlesson.posts.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +22,10 @@ public class PostService {
         return postRepository.findById(id).orElseThrow ( () -> new IllegalArgumentException ("해당 게시글이 없습니다.") );
     }
 
-    public List <PostResponseDto> findAll ( ) {
-        return postRepository.findAll( );
+    public Page <PostResponseDto> findPostByPageNum ( Pageable page ) {
+        List <PostResponseDto> postByPageNum = postRepository.findPostByPageNum ( page.getOffset (), page.getPageSize () );
+        int countPage = postRepository.countPost ( );
+        return new PageImpl <> (postByPageNum, page, countPage);
     }
 
     @Transactional
