@@ -21,7 +21,8 @@ spring:
     url: "jdbc:log4jdbc:mysql://localhost:3307/lesson" #도커 포트
     username: "root"
     password: "1234"
-    mustache:
+  mustache:
+    servlet:
       expose-session-attributes: true
 #MyBatis
 mybatis:

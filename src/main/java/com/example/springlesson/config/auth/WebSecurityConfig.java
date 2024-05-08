@@ -8,12 +8,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PrincipalOauth2UserService principalOauth2UserService;
+    private final AuthenticationFailureHandler customFailureHandler;
     @Bean
     public BCryptPasswordEncoder encoder(){
         return new BCryptPasswordEncoder ();
@@ -32,8 +34,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().permitAll()//기타 URL은 전부 허용(로그인 안해도 접근 가능)
             .and().formLogin().loginPage("/loginForm")
             .loginProcessingUrl("/loginProc")
+            .failureHandler ( customFailureHandler )
             .defaultSuccessUrl("/")
             .and().oauth2Login ().loginPage ( "/loginForm" )
+            .failureHandler ( customFailureHandler )
             .userInfoEndpoint ().userService ( principalOauth2UserService );
     }
 }

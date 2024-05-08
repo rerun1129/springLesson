@@ -26,7 +26,8 @@ public class ViewController {
     @GetMapping("/")
     public String index (Model model, Authentication authentication ) { //루트 템플릿에 인증 시 username을 넘겨서 로그인 분기를 취해주기 위함
         if(authentication != null) {
-            String role = ( ( PrincipalDetails ) authentication.getPrincipal ( ) ).getUser ( ).getRole ( ).name ( );
+            Users user = ( ( PrincipalDetails ) authentication.getPrincipal ( ) ).getUser ( );
+            String role = user.getRole ( ).name ( );
             model.addAttribute ( "username", authentication.getName ( ) );
             model.addAttribute ( "canGoAdmin", "ADMIN".equals ( role ) || "MANAGER".equals ( role ));
         }
@@ -66,7 +67,9 @@ public class ViewController {
     }
 
     @GetMapping("/loginForm")
-    public String loginForm(){
+    public String loginForm(@RequestParam(value = "error", required = false) String error, @RequestParam(value = "exception", required = false) String exception, Model model){
+        model.addAttribute("error", error);
+        model.addAttribute("exception", exception);
         return "loginForm";
     }
 

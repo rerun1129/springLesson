@@ -10,9 +10,12 @@ import com.example.springlesson.users.domain.vo.Users;
 import com.example.springlesson.users.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +46,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String username = provider+"_"+providerId;
         String password = ""; //비밀번호의 의미가 없음
         Optional <Users> optionalUsers = userRepository.findByUsername ( username );
+        if(optionalUsers.isPresent() && "Y".equals ( optionalUsers.get ().getSuspendedYn () )){
+            throw new InternalAuthenticationServiceException ("");
+        }
 
         Users buildUser = Users.builder ( )
                                 .username ( username )
