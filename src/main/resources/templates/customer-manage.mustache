@@ -1,0 +1,32 @@
+{{>layout/header}}
+<h1>회원 관리 페이지</h1>
+<table class="table table-horizontal table-bordered">
+	<thead class="thead-strong">
+	<tr>
+		<th>회원 번호</th>
+		<th>회원명</th>
+		<th>이메일</th>
+		<th>권한명</th>
+		<th>가입 경로</th>
+		<th>활성화 여부</th>
+		<th>수정</th>
+	</tr>
+	</thead>
+	<tbody id="tbody">
+	{{#users}}
+		<tr>
+			<td>{{id}}</td>
+			<td>{{username}}</td>
+			<td>{{email}}</td>
+			<td>{{role}}</td>
+			<td>{{joinPath}}</td>
+			<td>{{suspendedYn}}</td>
+			<td>
+				<a href="/admin/manage/customer/{{id}}" role="button" class="btn btn-secondary">정보 수정</a>
+			</td>
+		</tr>
+	{{/users}}
+	</tbody>
+</table>
+
+{{>layout/footer}}

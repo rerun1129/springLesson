@@ -9,6 +9,9 @@
 				{{#username}}
 					<a href="/logout" class="btn btn-danger active" role="button">로그아웃</a>
 					Logged in as: <span>{{username}}</span>
+					{{#canGoAdmin}}
+						<a href="/admin" class="btn btn-success active" role="button">어드민 페이지</a>
+					{{/canGoAdmin}}
 				{{/username}}
 				{{^username}}
 					<a href="/loginForm" class="btn btn-success active" role="button">로그인</a>

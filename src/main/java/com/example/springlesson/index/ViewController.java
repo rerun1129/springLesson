@@ -1,7 +1,9 @@
 package com.example.springlesson.index;
 
+import com.example.springlesson.config.auth.domain.PrincipalDetails;
 import com.example.springlesson.posts.domain.dto.PostResponseDto;
 import com.example.springlesson.posts.service.PostService;
+import com.example.springlesson.users.domain.dto.UsersManageResponseDto;
 import com.example.springlesson.users.domain.vo.Users;
 import com.example.springlesson.users.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -12,21 +14,23 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.stream.IntStream;
 
 @Controller
 @RequiredArgsConstructor
-public class viewController {
+public class ViewController {
     private final PostService postService;
     private final UserService userService;
 
     @GetMapping("/")
-    public ModelAndView index ( Authentication authentication ) { //루트 템플릿에 인증 시 username을 넘겨서 로그인 분기를 취해주기 위함
-        ModelAndView modelAndView = new ModelAndView("index");
-        if(authentication != null) modelAndView.addObject("username", authentication.getName());
-        return modelAndView;
+    public String index (Model model, Authentication authentication ) { //루트 템플릿에 인증 시 username을 넘겨서 로그인 분기를 취해주기 위함
+        if(authentication != null) {
+            String role = ( ( PrincipalDetails ) authentication.getPrincipal ( ) ).getUser ( ).getRole ( ).name ( );
+            model.addAttribute ( "username", authentication.getName ( ) );
+            model.addAttribute ( "canGoAdmin", "ADMIN".equals ( role ) || "MANAGER".equals ( role ));
+        }
+        return "index";
     }
 
     @GetMapping("/posts")
@@ -72,7 +76,41 @@ public class viewController {
     }
 
     @GetMapping("/admin")
-    public String admin(){
+    public String admin(Model model, Authentication authentication){
+        if(authentication != null) {
+            String role = ( ( PrincipalDetails ) authentication.getPrincipal ( ) ).getUser ( ).getRole ( ).name ( );
+            model.addAttribute ( "isAdmin", "ADMIN".equals ( role ) );
+        }
         return "admin";
+    }
+
+    @GetMapping("/admin/manage/customer")
+    public String customerManage(Model model){
+        model.addAttribute ( "users", userService.findAllByManage() );
+        return "customer-manage";
+    }
+
+    @GetMapping("/admin/manage/customer/{id}")
+    public String customerManageById ( Model model, @PathVariable Long id ){
+        UsersManageResponseDto dto = userService.findById ( id );
+        model.addAttribute ( "user", dto );
+        model.addAttribute ( "isManager", "MANAGER".equals ( dto.getRole ().name () ) );
+        model.addAttribute ( "isSuspended", "비활성화".equals ( dto.getSuspendedYn () ) );
+        return "customer-manage-update";
+    }
+
+    @GetMapping("/admin/log/post")
+    public String postLog(){
+        return "post-log";
+    }
+
+    @GetMapping("/admin/log/auth")
+    public String authLog(){
+        return "auth-log";
+    }
+
+    @GetMapping("/admin/log/access")
+    public String accessLog(){
+        return "access-log";
     }
 }

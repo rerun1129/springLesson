@@ -1,0 +1,49 @@
+{{>layout/header}}
+<h1>회원 권한 수정</h1>
+<div class="col-md-12">
+	<div class="col-md-4">
+		<form>
+			<div class="form-group">
+				<label for="id">회원 번호</label>
+				<input type="text" class="form-control" id="id" value="{{user.id}}" readonly>
+			</div>
+			<div class="form-group">
+				<label for="username">회원명</label>
+				<input type="text" class="form-control" id="username" value="{{user.username}}" readonly>
+			</div>
+			<div class="form-group">
+				<label for="email">이메일</label>
+				<input type="text" class="form-control" id="email" value="{{user.email}}" readonly>
+			</div>
+			<div class="form-group">
+				<label for="role">권한명</label>
+				<select class="form-select" aria-label="Default select example" id="role">
+					{{#isManager}}
+						<option value="USER">USER</option>
+						<option value="MANAGER" selected>MANAGER</option>
+					{{/isManager}}
+					{{^isManager}}
+						<option value="USER" selected>USER</option>
+						<option value="MANAGER">MANAGER</option>
+					{{/isManager}}
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="suspendedYn">활성화 여부</label>
+				<select class="form-select" aria-label="Default select example" id="suspendedYn">
+					{{#isSuspended}}
+						<option value="N">활성화</option>
+						<option value="Y" selected>비활성화</option>
+					{{/isSuspended}}
+					{{^isSuspended}}
+						<option value="N" selected>활성화</option>
+						<option value="Y">비활성화</option>
+					{{/isSuspended}}
+				</select>
+			</div>
+		</form>
+		<button type="button" class="btn btn-primary" id="btn-user-update">수정 완료</button>
+	</div>
+</div>
+
+{{>layout/footer}}

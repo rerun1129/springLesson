@@ -3,17 +3,36 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springlesson.users.repository.UserRepository">
 
+    <select id="findAllByManage" resultType="com.example.springlesson.users.domain.dto.UsersManageResponseDto">
+        select
+            id, username, email, role,
+            case when provider is null then '사이트 가입' else provider end as join_path,
+            case when suspended_yn = 'N' then '활성화' else '비활성화' end as suspended_yn
+        from users
+        where role != 'ADMIN'
+    </select>
+
     <select id="findByEmail" resultType="com.example.springlesson.users.domain.vo.Users">
         select
-            id, username, email, picture, role, provider, providerId
+            id, username, email, picture, role, provider, providerId, suspended_yn
         from users
         where email = #{email}
     </select>
+
     <select id="findByUsername" resultType="com.example.springlesson.users.domain.vo.Users">
         select
-            id, username, password, email, picture, role, provider, providerId
+            id, username, password, email, picture, role, provider, providerId, suspended_yn
         from users
         where username = #{username}
+    </select>
+
+    <select id="findById" resultType="com.example.springlesson.users.domain.dto.UsersManageResponseDto">
+        select
+            id, username, email, role,
+            case when provider is null then '사이트 가입' else provider end as join_path,
+            case when suspended_yn = 'N' then '활성화' else '비활성화' end as suspended_yn
+        from users
+        where id = #{id}
     </select>
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
@@ -21,10 +40,9 @@
         values (#{id}, #{username}, #{email}, #{picture}, 'USER', #{password}, current_timestamp, #{provider}, #{providerId})
     </insert>
 
-    <update id="update">
+    <update id="updateAuth" parameterType="com.example.springlesson.users.domain.dto.UserUpdateRequestDto">
         update users
-        set username = #{username},
-            picture = #{picture},
+        set suspended_yn = #{suspendedYn},
             role = #{role}
         where id = #{id}
     </update>

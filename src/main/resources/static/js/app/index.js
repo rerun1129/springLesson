@@ -12,6 +12,10 @@ const main = {
         $( '#btn-delete' ).on( 'click', function () {
             _this.delete();
         } )
+
+        $( '#btn-user-update' ).on( 'click', function () {
+            _this.userUpdate();
+        } )
     },
     save : function ()  {
         const data = {
@@ -69,8 +73,27 @@ const main = {
         } ).fail( function ( error ) {
             alert( JSON.stringify( error ) )
         } )
-    }
+    },
 
+    userUpdate : function () {
+        const data = {
+            id : $( '#id' ).val(),
+            role   : $( '#role' ).val(),
+            suspendedYn : $( '#suspendedYn' ).val()
+        }
+
+        $.ajax( {
+            type        : 'PUT',
+            url         : '/api/users',
+            contentType : 'application/json; charset=utf-8',
+            data        : JSON.stringify( data )
+        } ).done( function () {
+            alert( '회원 정보가 수정되었습니다.' )
+            window.location.href = '/admin/manage/customer'
+        } ).fail( function ( error ) {
+            alert( JSON.stringify( error ) )
+        } )
+    },
 }
 
 main.init();
