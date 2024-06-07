@@ -32,8 +32,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 // BasicAuthenticationFilter는 권한이나 인증에 필요한 특정 주소를 요청했을 때
 // 해당 필터를 타게 되어있다
 // 만약에 권한 인증이 필요한 주소가 아니라면 해당 필터를 타지 않는다.
-    protected void doFilterInternal ( HttpServletRequest request,
-                                      HttpServletResponse response, FilterChain chain )
+    protected void doFilterInternal ( HttpServletRequest request, HttpServletResponse response, FilterChain chain )
     throws IOException, ServletException {
         String header = request.getHeader ( JwtProperties.HEADER_STRING.getStr () );
         //헤더 여부 체크
@@ -61,7 +60,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             // 인증을 하기 위해서가 아닌 스프링 시큐리티가 수행해주는 권한 처리를 위해
             // 아래와 같이 토큰을 만들어서 Authentication 객체를 강제로 만들고
             // 그걸 세션에 저장!
-            PrincipalDetails principalDetails = new PrincipalDetails( user);
+            PrincipalDetails principalDetails = new PrincipalDetails(user);
             Authentication authentication =
                     //인증 객체는 토큰 사용 시 매니저를 사용할 수 없고 직접 만들어줘야 함
                     //서명이 정상이면 인증 객체를 '강제로' 만들어준다

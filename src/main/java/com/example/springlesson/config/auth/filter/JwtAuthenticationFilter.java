@@ -72,9 +72,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                              .withExpiresAt (new Date ( System.currentTimeMillis ( ) + JwtProperties.EXPIRATION_TIME.getMilliseconds ()) )
                              .withClaim("id", principalDetailis.getUser().getId())
                              .withClaim("username", principalDetailis.getUser().getUsername())
+                             .withClaim("role", principalDetailis.getUser().getRole ().name ())
                              .sign(Algorithm.HMAC512(JwtProperties.SECRET.getStr ()));
 
         response.addHeader(JwtProperties.HEADER_STRING.getStr (), JwtProperties.TOKEN_PREFIX.getStr ()+jwtToken);
-        response.sendRedirect ( "/" );
+//        request.getSession().setAttribute(JwtProperties.HEADER_STRING.getStr (), JwtProperties.TOKEN_PREFIX.getStr ()+jwtToken);
+//        response.sendRedirect ( "/" );
     }
 }

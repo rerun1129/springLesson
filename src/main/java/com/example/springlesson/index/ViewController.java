@@ -1,11 +1,15 @@
 package com.example.springlesson.index;
 
+import com.auth0.jwt.JWT;
 import com.example.springlesson.config.auth.domain.PrincipalDetails;
+import com.example.springlesson.config.auth.filter.property.JwtProperties;
+import com.example.springlesson.config.auth.util.JwtUtil;
 import com.example.springlesson.posts.domain.dto.PostResponseDto;
 import com.example.springlesson.posts.service.PostService;
 import com.example.springlesson.users.domain.dto.UsersManageResponseDto;
 import com.example.springlesson.users.domain.vo.Users;
 import com.example.springlesson.users.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +19,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Base64;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 @Controller
@@ -24,12 +33,17 @@ public class ViewController {
     private final UserService userService;
 
     @GetMapping("/")
-    public String index (Model model, Authentication authentication ) { //루트 템플릿에 인증 시 username을 넘겨서 로그인 분기를 취해주기 위함
-        if(authentication != null) {
-            Users user = ( ( PrincipalDetails ) authentication.getPrincipal ( ) ).getUser ( );
-            String role = user.getRole ( ).name ( );
-            model.addAttribute ( "username", authentication.getName ( ) );
-            model.addAttribute ( "canGoAdmin", "ADMIN".equals ( role ) || "MANAGER".equals ( role ));
+    public String index (Model model, HttpSession session ) { //루트 템플릿에 인증 시 username을 넘겨서 로그인 분기를 취해주기 위함
+        if(session.getAttribute ( "Authorization" ) != null) {
+            String token = ((String) session.getAttribute ( "Authorization" )).replace ( JwtProperties.TOKEN_PREFIX.getStr ( ), "" );
+            try {
+                Map<String, Object> payload = JwtUtil.decodeJWT ( token );
+                model.addAttribute ( "username", payload.get ( "username" ) );
+                String role = (String) payload.get ( "role" );
+                model.addAttribute ( "canGoAdmin", "ADMIN".equals ( role ) || "MANAGER".equals ( role ));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return "index";
     }
@@ -79,10 +93,16 @@ public class ViewController {
     }
 
     @GetMapping("/admin")
-    public String admin(Model model, Authentication authentication){
-        if(authentication != null) {
-            String role = ( ( PrincipalDetails ) authentication.getPrincipal ( ) ).getUser ( ).getRole ( ).name ( );
-            model.addAttribute ( "isAdmin", "ADMIN".equals ( role ) );
+    public String admin(Model model, HttpSession session){
+        if(session.getAttribute ( "Authorization" ) != null) {
+            String token = ((String) session.getAttribute ( "Authorization" )).replace ( JwtProperties.TOKEN_PREFIX.getStr ( ), "" );
+            try {
+                Map<String, Object> payload = JwtUtil.decodeJWT ( token );
+                String role = (String) payload.get ( "role" );
+                model.addAttribute ( "isAdmin", "ADMIN".equals ( role ));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return "admin";
     }
