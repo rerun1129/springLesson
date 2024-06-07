@@ -102,18 +102,4 @@ public class ViewController {
         return "customer-manage-update";
     }
 
-    @GetMapping("/admin/log/post")
-    public String postLog(){
-        return "post-log";
-    }
-
-    @GetMapping("/admin/log/auth")
-    public String authLog(){
-        return "auth-log";
-    }
-
-    @GetMapping("/admin/log/access")
-    public String accessLog(){
-        return "access-log";
-    }
 }
